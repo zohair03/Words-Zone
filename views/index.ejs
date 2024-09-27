@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/main.css" />
+    <title>Words Zone</title>
+  </head>
+  <body class="d-flex flex-column">
+    <!-- nav bar -->
+    <nav class="navbar bg-success">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white" style="margin-left: 2%;font-weight: 600;">Words Zone</a>
+        <div class="d-flex justify-content-center align-items-center links" style="margin-right: 2%;">
+          <a href="#" class="nav-link ms-2" ><button class="badge btn text-bg-light">github repo</button></a>
+        </div>
+      </div>
+    </nav>
+    <!-- dictionary-->
+    <div class="d-flex flex-column dictionary">
+      <!-- search bar -->
+      <form class="d-flex mb-3 searchBarForm container" action="/" method="post">
+        <input
+          class="rounded-pill form-control me-2 searchBar "
+          name="word"
+          type="search"
+          placeholder="search a word"
+        />
+        <button class="btn rounded-pill bg-success ">search</button>
+      </form>
+      <!-- content -->
+      <% if(locals.word) {%>
+        <div class="d-flex justify-content-center container">
+          <div class="content">
+            <div class="d-flex wordSoundTrans">
+              <!-- pronunciation button -->
+              <button type="button" class="voiceBtn btn bg-success volumeBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" style="margin-bottom: 1px;"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320Z"/></svg>
+              </button>
+              <!-- words -->
+              <div>
+                <h2 class="word wordPronun"><%= word%></h2>
+                <p class="transcription"><%= transcription %></p>
+              </div>
+            </div>
+            <!-- meaning -->
+            <% meanings.forEach((meaning) => { %>
+              <!-- part of speech -->
+              <p class="fst-italic partOfSpeech"><%= meaning.partOfSpeech %></p>
+              <div class="defAndEg">
+                <!-- definitions & examples -->
+                <% meaning.definitions.forEach((definition, index) => { %>
+                  <!-- definition -->
+                  <p>definition: <%= definition.definition %></p>
+                  <!-- examples -->
+                  <% if(meaning.definitions[index].example) { %>
+                    <div class="d-flex mb-3">
+                      <!-- dialog -->
+                      <div class="comma commaSize align-self-center"></div>
+                      <div class="border px-3 commaBorder d-flex">
+                        <!-- sentence -->
+                        <p class="m-0 readSentence"><%= definition.example %></p>
+                        <!-- volume svg -->
+                         <div>
+                          <svg class="pronunciationSentenceSvg speakSentence" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#000000"><path d="M552-152v-75q86-23 139-93.5T744-480q0-89-53.5-158.5T552-734v-75q116 25 190 117t74 211q0 119-73.5 211.5T552-152ZM144-385v-192h144l192-192v576L288-385H144Zm408 55v-302q45 20 70.5 61t25.5 90q0 49-25.5 89.5T552-330Z"/></svg>
+                         </div>
+                      </div>
+                    </div>
+                  <% } %>
+                <% }); %>
+                <!-- synonyms -->
+                <% if(meaning.synonyms[0]) { %>
+                  <div class="text-break text-wrap mb-1">
+                    <span class="text-success">Similar: </span>
+                    <form class="d-inline" action="/" method="post">
+                      <% meaning.synonyms.forEach(synonym => {%>
+                        <button class="rounded-pill synAnt" name="word" value="<%= synonym %>" type="submit"><%= synonym %></button> 
+                      <% }); %>
+                    </form>
+                  </div>
+                <% } %>
+                <!-- antonyms -->
+                <% if(meaning.antonyms[0]) { %>
+                  <div class="text-break text-wrap">
+                    <span class="text-danger">Opposite: </span>
+                    <form class="d-inline" action="/" method="post">
+                      <% meaning.antonyms.forEach(antonym => {%>
+                        <button class="rounded-pill synAnt" name="word" value="<%= antonym %>" type="submit"><%= antonym %></button> 
+                      <% }); %>
+                    </form>
+                  </div>
+                <% } %> 
+              </div>
+            <% }); %>
+            <!-- urls -->
+            <p class="text-center"><a href="<%= sourceUrls[0] %>"> Read more </a></p>
+          </div>
+        </div>
+      <% } else if(locals.message) { %>
+        <!-- error message -->
+        <h1 class="align-self-center"><%= message %></h1>
+      <% }else{%>
+        <!-- welcome page -->
+        <h1 class="align-self-center">search any word !!</h1>
+      <% } %>
+    </div>
+
+    <!-- footer -->
+    <footer class="mt-auto bg-success">
+      <div class="d-flex justify-content-center align-items-center links mt-1 mb-0">
+          <a href="https://github.com/zohair03" class="nav-link" target="_blank">
+            <i class="bi bi-github me-3">
+              <svg style="width: 26px;height: 26px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+              </svg>
+            </i>
+          </a> 
+          
+          <a href="https://www.linkedin.com/in/zohair-ahmad-262425229?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BAR3%2B%2B8EpQJeogiJyV6C%2B9Q%3D%3D" class="nav-link" target="_blank">
+            <i class="bi bi-linkedin me-3">
+              <svg style="width: 26px;height: 26px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+              </svg>
+            </i>
+          </a> 
+          
+          <a href="https://x.com/zohair_03" class="nav-link" target="_blank">
+            <i class="bi bi-twitter-x me-3">
+              <svg style="width: 26px;height: 26px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+              </svg>
+            </i>
+          </a> 
+      </div>
+      <div class="d-flex justify-content-center align-items-center flex-wrap">
+        <span class="badge rounded-pill text-bg-light">zohairrahmed03@gmail.com</span>
+        <p class="m-2">© Copy Right | Made by Zohair Ahmad</p>
+      </div>
+    </footer>
+
+    <script>
+      let speech = new SpeechSynthesisUtterance();
+      let speakSentenceButtonElements = document.querySelectorAll(".speakSentence");
+      let speakSentenceElements = document.querySelectorAll(".readSentence")
+
+      document.querySelector(".voiceBtn").addEventListener("click", () => {
+        speech.text = document.querySelector(".wordPronun").innerText;
+        window.speechSynthesis.speak(speech);
+      });
+
+      for (let i = 0; i < speakSentenceButtonElements.length; i++) {
+        speakSentenceButtonElements[i].addEventListener("click", () => {
+            speech.text = speakSentenceElements[i].innerHTML;
+            window.speechSynthesis.speak(speech);
+        });
+      }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
