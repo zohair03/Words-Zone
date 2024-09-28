@@ -1,8 +1,13 @@
 # Words-Zone
-This is a dictionary website for english language and english slang 
-live link of project: https://words-zone.onrender.com/
+This is a dictionary website for english language and english slang.
 
-images of website:
+Live-link of the project: https://words-zone.onrender.com/
+
+Run command:<br>
+--> $ npm install <br>--> $ node index.js
+
+
+Images of website:
 
 ![home page](https://github.com/user-attachments/assets/b227f142-98fd-4a8e-9a48-e18d81f51895)
 
