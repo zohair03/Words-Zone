@@ -4,7 +4,7 @@ This is a dictionary website for english language and english slang.
 Live-link of the project: https://words-zone.onrender.com/
 
 Run command:<br>
--> $ npm install <br>-> $ node index.js
+$ npm install <br>$ node index.js
 
 
 Images of website:
